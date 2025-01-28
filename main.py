@@ -89,7 +89,7 @@ def crossover(parent1, parent2):
 
 # Mutação
 ## Pega uma solução possível e calcula um possível mutação
-def mutate(solution, mutation_rate=0.1):
+def mutate(solution, mutation_rate=0.05):
     for i in range(len(solution)):
         if random.random() < mutation_rate:
             solution[i] = random.choice(list(APs.keys())) # se cair na probabilidade mutation_rate , seleciona um novo valor aleatório de AP
@@ -104,7 +104,7 @@ def mutate(solution, mutation_rate=0.1):
 ### Realizamos a mutação dos genes
 ### Atualizamos a população para a população atual (passamos entre gerações)
 ## No fim pegamos a geração mais recente , calculamos o fitness de toda a geração e escolhemos aquele com o menor fitness
-def genetic_algorithm(clients, pop_size=100, generations=200, mutation_rate=0.1):
+def genetic_algorithm(clients, pop_size=100, generations=200, mutation_rate=0.02):
     population = initialize_population(len(clients), pop_size)
 
     #for i in population:
