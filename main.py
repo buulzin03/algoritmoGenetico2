@@ -89,7 +89,7 @@ def crossover(parent1, parent2):
 
 # Mutação
 ## Pega uma solução possível e calcula um possível mutação
-def mutate(solution, mutation_rate=0.05):
+def mutate(solution, mutation_rate=0.008):
     for i in range(len(solution)):
         if random.random() < mutation_rate:
             solution[i] = random.choice(list(APs.keys())) # se cair na probabilidade mutation_rate , seleciona um novo valor aleatório de AP
@@ -104,7 +104,7 @@ def mutate(solution, mutation_rate=0.05):
 ### Realizamos a mutação dos genes
 ### Atualizamos a população para a população atual (passamos entre gerações)
 ## No fim pegamos a geração mais recente , calculamos o fitness de toda a geração e escolhemos aquele com o menor fitness
-def genetic_algorithm(clients, pop_size=100, generations=200, mutation_rate=0.02):
+def genetic_algorithm(clients, pop_size=100, generations=200, mutation_rate=0.008):
     population = initialize_population(len(clients), pop_size)
 
     #for i in population:
@@ -127,6 +127,18 @@ def genetic_algorithm(clients, pop_size=100, generations=200, mutation_rate=0.02
     fitnesses = [evaluate_fitness(individual, clients) for individual in population]
     best_solution = population[np.argmin(fitnesses)]
     return best_solution, min(fitnesses)
+
+def calculate_average_distance(result):
+    distance_elements = []
+    
+    for elements in result:
+        if elements[0] == "Cliente":
+            continue
+        
+        distance_elements.append(calculate_distance([elements[2], elements[3]], APs[elements[1]]["loc"]))
+    
+    print(len(distance_elements))
+    return sum(distance_elements)/len(distance_elements)
 
 
 # Salvar resultados em um arquivo CSV
@@ -169,6 +181,7 @@ new_colors = [colors_dict[char] for char in colors]
 
 unique, counts = np.unique(colors, return_counts=True)
 print(dict(zip(unique,counts)))
+print(f"A media das distancias eh {calculate_average_distance(result.to_numpy())}")
 # plot
 fig, ax = plt.subplots()
 green_patch = mpatches.Patch(color = "green", label = "AP A")
